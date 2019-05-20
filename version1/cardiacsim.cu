@@ -22,6 +22,7 @@
 #include <getopt.h>
 #include <vector>
 #include <algorithm>
+#define TILE_DIM 32
 
 using namespace std;
 
@@ -140,8 +141,8 @@ int main (int argc, char** argv)
   cudaMemcpy(d_R, &h_R[0], sizeof(double) * (m+2) * (n+2), cudaMemcpyHostToDevice);
   cudaMemcpy(d_tmp, &h_tmp[0], sizeof(double) * (m+2) * (n+2), cudaMemcpyHostToDevice);
 
-  const dim3 thread_size(32,32); // Max thread on one unit
-  const dim3 num_blocks(m/32+1,n/32+1); // Division will take floor. So we add one. We check the boundaries inside kernels.
+  const dim3 thread_size(TILE_DIM,TILE_DIM); // Max thread on one unit
+  const dim3 num_blocks(m/TILE_DIM+1,n/TILE_DIM+1); // Division will take floor. So we add one. We check the boundaries inside kernels.
 
   double dx = 1.0/n;
 
