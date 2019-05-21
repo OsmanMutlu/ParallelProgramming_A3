@@ -87,8 +87,9 @@ __global__ void simulate (double *E, double *E_prev, double *R, const double alp
       E_prev_Block[ty+1][TILE_DIM+1] = E_prev[row*(n+2) + col+TILE_DIM-1];
     }
 
-    E[row*(n+2)+col] = E_prev_Block[ty+1][tx+1] + alpha*(E_prev_Block[ty+1][tx+2] + E_prev_Block[ty+1][tx] - 4*E_prev_Block[ty+1][tx+1] + E_prev_Block[ty+2][tx+1] + E_prev_Block[ty][tx+1]);
+    __syncthreads();
 
+    E[row*(n+2)+col] = E_prev_Block[ty+1][tx+1] + alpha*(E_prev_Block[ty+1][tx+2] + E_prev_Block[ty+1][tx] - 4*E_prev_Block[ty+1][tx+1] + E_prev_Block[ty+2][tx+1] + E_prev_Block[ty][tx+1]);
 
     // E[row*(n+2)+col] = E_prev[row*(n+2)+col] + alpha*(E_prev[row*(n+2)+col+1] + E_prev[row*(n+2)+col-1] - 4*E_prev[row*(n+2)+col] + E_prev[(row+1)*(n+2)+col] + E_prev[(row-1)*(n+2)+col]);
 
